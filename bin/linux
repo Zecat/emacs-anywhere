@@ -50,13 +50,15 @@ else # HACK --clearmodifers and --window seems problematic with some app eg. lib
     sleep 2
 fi
 
-EA_INPUT_VALUE=$( xclip -o -sel clipboard )
-export EA_INPUT_VALUE
+# Copy the clipboard content to a temporary file
+xclip -o -sel clipboard > /tmp/eainputvalue
 
 # Restore clipboard
 echo $CLIPBOARD_BACKUP | xclip -sel c
 
 $HOME/.emacs_anywhere/bin/emacstask
+
+rm /tmp/eainputvalue
 
 if [ ! -f /tmp/eaenv ]; then
     exit 1
@@ -78,6 +80,7 @@ xdotool windowactivate --sync $EA_WINDOW
 if [ "$EA_SHOULD_PASTE" = true ]; then
     xdotool key --clearmodifiers Shift+Insert
 fi
+
 
 # Wait a bit for the copy to apply
 # TODO Check if it is problematic for very large copy

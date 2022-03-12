@@ -1,6 +1,6 @@
 (defvar ea-popup-hook nil
   "Functions run after entering Emacs Anywhere session.
-Functions are run with args INPUT-VALUE APP-NAME WINDOW-TITLE X Y WIDTH HEIGHT")
+Functions are run with args APP-NAME WINDOW-TITLE X Y WIDTH HEIGHT")
 
 (defvar ea-on t)
 (defvar ea-copy t)
@@ -50,8 +50,9 @@ Functions are run with args INPUT-VALUE APP-NAME WINDOW-TITLE X Y WIDTH HEIGHT")
   (add-hook 'delete-frame-functions 'ea--delete-frame-handler)
   (switch-to-buffer ea--buffer-name)
   (select-frame-set-input-focus (selected-frame))
+  ;; insert the initial input value into the buffer
+  (insert-file-contents "/tmp/eainputvalue")
   (run-hook-with-args 'ea-popup-hook
-                      ea-input-value
                       ea-app-name
                       ea-window-title
                       ea-x

@@ -10,7 +10,6 @@ ELISP=$( cat $HOME/.emacs_anywhere/emacs_anywhere.el )
 
 # Open emacsclient in a new frame, borderless with transparency
 emacsclient -a "" -c --frame-parameters="((undecorated . t) (fullscreen . fullboth) (alpha . (97 . 50)))" -e "(progn
-                 (defconst ea-input-value \"$EA_INPUT_VALUE\")
                  (defconst ea-app-name $EA_APP_NAME)
                  (defconst ea-window-title $EA_WINDOW_TITLE)
                  (defconst ea-x $EA_X)
