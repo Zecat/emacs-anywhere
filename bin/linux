@@ -24,6 +24,38 @@ fi
 export EA_WIDTH="${EA_GEO[4]}"
 export EA_HEIGHT="${EA_GEO[5]}"
 
+# TODO find alternative for wayland, try wl-clipboard, ydotool, wtype https://dcz_self.gitlab.io/posts/input_method/
+
+CLIPBOARD_BACKUP=$( xclip -o -sel clipboard )
+
+# Clear the clipboard
+echo "" | xclip -sel c
+
+# TODO it's weird that EA_APP_NAME includes the quotes
+if [ "${EA_APP_NAME}" = "\"firefox\"" ]; then
+    # Note: I personally bound emacs anywhere to 'Alt+$' shortcut. So when the script runs, 'Alt' is still down
+
+    # Pretend to release the 'alt' key with --clearmodifiers, then select the text and copy to clipboard
+    xdotool key --clearmodifiers --window $EA_WINDOW ctrl+a ctrl+c
+    # Wait a bit for the clipboard to record
+    sleep 0.1
+else # HACK --clearmodifers and --window seems problematic with some app eg. libreoffice
+    # Note: I bound emacs anywhere to 'Alt+$' shortcut. So when the script runs, 'Alt' is still down
+
+    # Pretend to release the 'alt' key then select the text and copy to clipboard
+    xdotool keyup alt key ctrl+a ctrl+c
+
+    # Wait a bit, otherwise the focus is not given to the newly create emacs frame
+    # TODO instead, programmatically ensure focus to the new frame
+    sleep 2
+fi
+
+EA_INPUT_VALUE=$( xclip -o -sel clipboard )
+export EA_INPUT_VALUE
+
+# Restore clipboard
+echo $CLIPBOARD_BACKUP | xclip -sel c
+
 $HOME/.emacs_anywhere/bin/emacstask
 
 if [ ! -f /tmp/eaenv ]; then
@@ -46,3 +78,10 @@ xdotool windowactivate --sync $EA_WINDOW
 if [ "$EA_SHOULD_PASTE" = true ]; then
     xdotool key --clearmodifiers Shift+Insert
 fi
+
+# Wait a bit for the copy to apply
+# TODO Check if it is problematic for very large copy
+sleep 1
+
+# Restore clipboard
+echo $CLIPBOARD_BACKUP | xclip -sel c

@@ -1,3 +1,13 @@
+# Fork modifications
+
+The modifications I made are specific to my scenario and include a lot of HACK
+
+Changes:
+- forward input content to the emacs frame
+- drop support for $EA_EDITOR
+- open emacs frame fullscreen with some transparency
+
+
 <p align="center">
   <img src="https://imgur.com/KEvaVTP.jpg" width="250px"></img>
 </p>

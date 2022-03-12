@@ -2,11 +2,15 @@
 
 ELISP=$( cat $HOME/.emacs_anywhere/emacs_anywhere.el )
 
-if [ -z "$EA_EDITOR" ]; then
-    EA_EDITOR='emacsclient -a "" -c'
-fi
+# TODO When another instance of emacsclient is running, emacs-anywhere ask for confirmation on closing which is annoying.
 
-$EA_EDITOR -e "(progn
+# TODO Find a solution for not having to override the `~/.emacs_anywhere/bin/emacstask` file and use the $EA_EDITOR variable. Problem: --frame-parameters seems ignored, an escaping issue I guess.
+
+# TODO Better error handling, if 'ae-popup-hook is errored, the frame just closes silently. Things could be printed to *messages*
+
+# Open emacsclient in a new frame, borderless with transparency
+emacsclient -a "" -c --frame-parameters="((undecorated . t) (fullscreen . fullboth) (alpha . (97 . 50)))" -e "(progn
+                 (defconst ea-input-value \"$EA_INPUT_VALUE\")
                  (defconst ea-app-name $EA_APP_NAME)
                  (defconst ea-window-title $EA_WINDOW_TITLE)
                  (defconst ea-x $EA_X)
