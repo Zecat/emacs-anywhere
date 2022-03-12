@@ -7,6 +7,9 @@ Changes:
 - drop support for $EA_EDITOR
 - open emacs frame fullscreen with some transparency
 
+TODO:
+- support wayland
+
 
 <p align="center">
   <img src="https://imgur.com/KEvaVTP.jpg" width="250px"></img>
